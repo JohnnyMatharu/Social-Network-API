@@ -26,6 +26,7 @@ THEN I am able to successfully create and delete reactions to thoughts and add a
 
 
 //Hilary demo: everything in the video
-//user, thought and reaction as models and friends as sub-document 
+//User, thought and reaction as models and friends as sub-document 
 
-//current MOck up on assignment page, match file structure with mod code 
+//In addition to this, your walkthrough video should show the POST and DELETE routes for reactions to thoughts being tested in Insomnia Core.
+// current user route module assignment nexxt is thought route
