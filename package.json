@@ -1,0 +1,24 @@
+{
+  "name": "social-network-api",
+  "version": "1.0.0",
+  "description": "Thoughts and Reaction blog",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JohnnyMatharu/Social-Network-API.git"
+  },
+  "author": "Johnny Matharu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JohnnyMatharu/Social-Network-API/issues"
+  },
+  "homepage": "https://github.com/JohnnyMatharu/Social-Network-API#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.12.14"
+  }
+}
