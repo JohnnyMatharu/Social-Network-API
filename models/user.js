@@ -1,8 +1,11 @@
-/*
 const { Schema, model } = require('mongoose');
 const dateFormat = require('../utils/dateFormat');
 
-const PizzaSchema = new Schema(
+const UserSchema = new Schema(
+  //HERE
+  // Mongo is working now, install the 3T as workbench and connect your database, seed files, use activities
+  // if needed and use database name as created, use TA terminal instuctions if caught again with installation
+  // make seeds, make user model and route first and test first 
   {
     pizzaName: {
       type: String,
@@ -51,12 +54,9 @@ PizzaSchema.virtual('commentCount').get(function() {
   );
 });
 
-const Pizza = model('Pizza', PizzaSchema);
+const User = model('User', UserSchema);
 
-module.exports = Pizza;
-*/
-
-
+module.exports = User;
 
 
 

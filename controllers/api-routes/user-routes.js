@@ -1,8 +1,8 @@
 /*
+const { user } = require('../../models');
 
-const { Pizza } = require('../models');
-
-const pizzaController = {
+// const user if repetitive, has to be checked
+const user = {
   // get all pizzas
   getAllPizza(req, res) {
     Pizza.find({})
@@ -62,12 +62,8 @@ const pizzaController = {
   }
 };
 
-module.exports = pizzaController;
-
-
+module.exports = user-routes;
 */
-
-
 
 
 
