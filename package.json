@@ -19,6 +19,7 @@
   "homepage": "https://github.com/JohnnyMatharu/Social-Network-API#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "mongoose": "^5.12.14"
+    "mongoose": "^5.12.14",
+    "validator": "^13.6.0"
   }
 }

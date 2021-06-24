@@ -32,10 +32,10 @@ app.listen(PORT, () => console.log(`🌍 Connected on localhost:${PORT}`));
 
 
 
-// Require NPM i, NPM init (done) 
+// Require NPM, NPM init (done) 
 // Require Mongoose (done, works like sequelize)
 // Require Express (done)
-
+// Require mongoose validator (email validator done)
 
 //MOngo terminal is running (just type mongo it will run, if problem restart along with services and path command)
 // that is missing in module or documentation, your version is 4.2 not anything else)
@@ -98,4 +98,6 @@ A walkthrough video demonstrating the functionality of the application and all o
 
 The URL of the GitHub repository. Give the repository a unique name and include a README describing the project.
 */
+
+
 
