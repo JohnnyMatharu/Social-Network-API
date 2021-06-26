@@ -1,7 +1,9 @@
+//Now you have to add router... to every Crud operation, check documentation and weekly activities
 
 const {User} = require('../../models');
+const router = require('express').Router();
 // const user if repetitive, has to be checked
-const user = {
+const User = {
   // API Routes
   //check this format
 //  /api/users
@@ -52,43 +54,44 @@ const user = {
 
 
 //this is PUT, to update, HERE
+//PUT to update a user by its _id
 
 
-
-  // update pizza by id
-  updatePizza({ params, body }, res) {
-    Pizza.findOneAndUpdate({ _id: params.id }, body, { new: true, runValidators: true })
-      .then(dbPizzaData => {
-        if (!dbPizzaData) {
-          res.status(404).json({ message: 'No pizza found with this id!' });
+  updateUser({ params, body }, res) {
+    User.findOneAndUpdate({ _id: params.id }, body, { new: true, runValidators: true })
+      .then(dbUserData => {
+        if (!dbUserData) {
+          res.status(404).json({ message: 'No User found with this id!' });
           return;
         }
-        res.json(dbPizzaData);
+        res.json(dbUserData);
       })
       .catch(err => res.json(err));
   },
 
-  // delete pizza
-  deletePizza({ params }, res) {
-    Pizza.findOneAndDelete({ _id: params.id })
-      .then(dbPizzaData => res.json(dbPizzaData))
+  //DELETE to remove user by its _id
+
+ // BONUS: Remove a user's associated thoughts when deleted.
+  deleteUser({ params }, res) {
+    User.findOneAndDelete({ _id: params.id })
+      .then(dbUserData => res.json(dbUserData))
       .catch(err => res.json(err));
   }
 };
 
-module.exports = user-routes;
+//this is to be checked
+module.exports = router;
 
 
 
 /*
+HERE
 
 
 
-PUT to update a user by its _id
 
-DELETE to remove user by its _id
 
-BONUS: Remove a user's associated thoughts when deleted.
+
 
 /api/users/:userId/friends/:friendId
 
