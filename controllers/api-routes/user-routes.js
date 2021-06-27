@@ -78,18 +78,49 @@ router.put('/:id', (req, res) => {
   });
 
   //POST to add a new friend to a user's friend list
-  router.post('/api/users/:userId/friends/:friendId', (req, res) => {
-    User.create(req.body)
-      .then(dbUserData => res.json(dbUserData))
-      .catch(err => res.json(err));
-    });
+  router.post('/:userId/friends/:friendId', (req, res) => {
+    console.log("My post friend route was hit");
+    console.log(req.params.userId);
+  console.log(req.params.friendId);
 
-//DELETE to remove a friend from a user's friend list
-router.delete('/api/users/:userId/friends/:friendId', (req, res) => {
-  User.findOneAndDelete({ _id: req.params.id })
-    .then(dbUserData => res.json(dbUserData))
-    .catch(err => res.json(err));
+  res.status(200).json({message: "Route hit!"});
+
+User.findOneAndUpdate({
+_id: req.params.userId
+}, {
+$addToSet: {
+  friends: req.params.friendId
+}
+}, {
+  new: true
+})   .then(dbUserData => {
+  if (!dbUserData) {
+    res.status(404).json({ message: 'No User found with this id!' });
+    return;
+  }
+  res.json(dbUserData);
+})
+.catch(err => res.json(err));
 });
 
+//DELETE to remove a friend from a user's friend list
+router.delete('/:userId/friends/:friendId', (req, res) => {
+  User.findOneAndUpdate({
+  _id: req.params.userId
+}, {
+$pull: {
+  friends: req.params.friendId
+}
+}, {
+  new: true
+})   .then(dbUserData => {
+  if (!dbUserData) {
+    res.status(404).json({ message: 'No User found with this id!' });
+    return;
+  }
+  res.json(dbUserData);
+})
+.catch(err => res.json(err));
+});
   //this is to be checked
 module.exports = router;
