@@ -3,12 +3,13 @@
 const {User} = require('../../models');
 const router = require('express').Router();
 // const user if repetitive, has to be checked
-const User = {
+
   // API Routes
   //check this format
 //  /api/users
 
-  getAllUser(req, res) {
+router.get('/', (req, res) => {
+  //make sure this is find or findAll
     User.find({})
     //HERE
       .then(dbUserData => res.json(dbUserData))
@@ -16,12 +17,11 @@ const User = {
         console.log(err);
         res.sendStatus(400);
       });
-  },
+  }),
 
   // get one pizza by id
-  getUserById({ params }, res) {
+  router.get('/:id', (req, res) => {
     User.findOne({ _id: params.id })
-
 //GET a single user by its _id and populated thought and friend data
       .populate({
         path: 'thoughts',
@@ -37,7 +37,7 @@ const User = {
         console.log(err);
         res.sendStatus(400);
       });
-  },
+  })
 //POST a new user:
 
 // example data
@@ -46,18 +46,17 @@ const User = {
   //"email": "lernantino@gmail.com"
 //}
 
-  createUser({ body }, res) {
+router.post('/', (req, res) => {
     User.create(body)
       .then(dbUserData => res.json(dbUserData))
       .catch(err => res.json(err));
-    },
-
+    });
 
 //this is PUT, to update, HERE
 //PUT to update a user by its _id
 
 
-  updateUser({ params, body }, res) {
+router.put('/:id', (req, res) => {
     User.findOneAndUpdate({ _id: params.id }, body, { new: true, runValidators: true })
       .then(dbUserData => {
         if (!dbUserData) {
@@ -67,37 +66,30 @@ const User = {
         res.json(dbUserData);
       })
       .catch(err => res.json(err));
-  },
+  });
 
   //DELETE to remove user by its _id
 
  // BONUS: Remove a user's associated thoughts when deleted.
-  deleteUser({ params }, res) {
+ router.delete('/:id', (req, res) => {
     User.findOneAndDelete({ _id: params.id })
       .then(dbUserData => res.json(dbUserData))
       .catch(err => res.json(err));
-  }
-};
+  });
 
-//this is to be checked
+  //POST to add a new friend to a user's friend list
+  router.post('/api/users/:userId/friends/:friendId', (req, res) => {
+    User.create(body)
+      .then(dbUserData => res.json(dbUserData))
+      .catch(err => res.json(err));
+    });
+
+//DELETE to remove a friend from a user's friend list
+router.delete('/api/users/:userId/friends/:friendId', (req, res) => {
+  User.findOneAndDelete({ _id: params.id })
+    .then(dbUserData => res.json(dbUserData))
+    .catch(err => res.json(err));
+});
+
+  //this is to be checked
 module.exports = router;
-
-
-
-/*
-HERE
-
-
-
-
-
-
-
-/api/users/:userId/friends/:friendId
-
-POST to add a new friend to a user's friend list
-
-DELETE to remove a friend from a user's friend list
-
-
-*/

@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "seed": "node db/seed.js",
     "start": "node server.js"
   },
   "repository": {
@@ -20,6 +21,8 @@
   "dependencies": {
     "express": "^4.17.1",
     "mongoose": "^5.12.14",
+    "mongoose-data-seed": "^2.1.6",
+    "mongoose-seed": "^0.6.0",
     "validator": "^13.6.0"
   }
 }
