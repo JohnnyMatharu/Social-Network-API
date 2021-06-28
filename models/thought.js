@@ -1,108 +1,51 @@
-/*
-
-const { Schema, model, Types } = require('mongoose');
+const { Schema, model } = require('mongoose');
 const dateFormat = require('../utils/dateFormat');
 
-const ReplySchema = new Schema(
+const ThoughtSchema = new Schema(
+  
   {
-    // set custom id to avoid confusion with parent comment _id
-    replyId: {
-      type: Schema.Types.ObjectId,
-      default: () => new Types.ObjectId()
+    thoughtText: {
+      type: String,
+      min:   1,
+      max: 280,
+      required: true
+      
     },
-    replyBody: {
+// createdAt above has to be checked and so is min and max
+// HERE
+    createdAt: { 
+      type: Date, 
+      default: Date.now(),
+      //this getter needs to be checked
+      get: timestamp 
+    },
+  
+    username: {
       type: String,
       required: true
-    },
-    writtenBy: {
-      type: String,
-      required: true,
-      trim: true
-    },
-    createdAt: {
-      type: Date,
-      default: Date.now,
-      get: createdAtVal => dateFormat(createdAtVal)
-    }
-  },
+},
+reactions: [
   {
-    toJSON: {
-      getters: true
-    }
+    type: Schema.Types.ObjectId,
+    ref: 'Reaction'
   }
-);
-
-const CommentSchema = new Schema(
-  {
-    writtenBy: {
-      type: String,
-      required: true
-    },
-    commentBody: {
-      type: String,
-      required: true
-    },
-    createdAt: {
-      type: Date,
-      default: Date.now,
-      get: createdAtVal => dateFormat(createdAtVal)
-    },
-    // use ReplySchema to validate data for a reply
-    replies: [ReplySchema]
+]
   },
   {
     toJSON: {
       virtuals: true,
       getters: true
     },
+    // prevents virtuals from creating duplicate of _id as `id`
     id: false
   }
 );
 
-CommentSchema.virtual('replyCount').get(function() {
-  return this.replies.length;
+ThoughtSchema.virtual('reactionCount').get(function() {
+  return this.reactions.length;
 });
 
-const Comment = model('Comment', CommentSchema);
 
-module.exports = Comment;
+const Thought = model('Thought', ThoughtSchema);
 
-
-
-*/
-
-
-
-
-
-
-
-
-
-/*
-Thought
-
-thoughtText
-
-String
-Required
-Must be between 1 and 280 characters
-createdAt
-
-Date
-Set default value to the current timestamp
-Use a getter method to format the timestamp on query
-username (The user that created this thought)
-
-String
-Required
-reactions (These are like replies)
-
-Array of nested documents created with the reactionSchema
-*/
-
-/*
-Schema Settings
-Create a virtual called reactionCount that retrieves the length of the thought's reactions array field on query.
-*/
-
+module.exports = Thought;
