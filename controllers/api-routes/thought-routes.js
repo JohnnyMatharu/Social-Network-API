@@ -123,9 +123,9 @@ router.delete('/:thoughtId/reactions/:reactionId', (req, res) => {
     _id: req.params.thoughtId
   }, {
     $pull: {
-      reactions: req.params.reactionId
+      reactions: { _id : req.params.reactionId }
     }
-  }, {
+    }, {
     new: true
   }).then(dbUserData => {
     if (!dbUserData) {
