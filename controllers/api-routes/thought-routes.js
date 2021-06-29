@@ -40,7 +40,9 @@ router.get('/', (req, res) => {
 
 
 
-
+//the reason for the code to look like this is because thoughts dont have id and they will connect to 
+//user id, so every thought will have id that is actually userId but accessed/referenced as thoughtId
+//for CRUD operations on it
 router.post('/', (req, res) => {
   Thought.create(req.body)
     .then(dbUserData => {
@@ -55,8 +57,8 @@ router.post('/', (req, res) => {
   
 
 
-
 //PUT to update a thought by its _id
+//we used user id to update not thought id as there is none
 router.put('/:id', (req, res) => {
   Thought.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true, runValidators: true })
     .then(dbUserData => {
@@ -116,12 +118,12 @@ router.post('/:thoughtId/reactions', (req, res) => {
 //To be checked thoroughly
 //DELETE to pull and remove a reaction by the reaction's reactionId value
 
-router.delete('/:thoughtId/reactions', (req, res) => {
+router.delete('/:thoughtId/reactions/:reactionId', (req, res) => {
   Thought.findOneAndUpdate({
     _id: req.params.thoughtId
   }, {
     $pull: {
-      reactions: req.body
+      reactions: req.params.reactionId
     }
   }, {
     new: true
