@@ -28,11 +28,7 @@ router.get('/', (req, res) => {
   })
 
 //Make sure it does following, check it out, and instruction underneath, may need to push in array for thoughts in user model
-//{
-//"thoughtText": "Here's a cool thought...",
-// "username": "lernantino",
-// "userId": "5edff358a0fcb779aa7b118b"
-// }
+
 
 //To be understood
 //POST to create a new thought (don't forget to push the created thought's _id to the associated user's thoughts array field)
