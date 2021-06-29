@@ -6,11 +6,13 @@ seeder.connect('mongodb://localhost/social-network', function() {
   // Load Mongoose models
   seeder.loadModels([
       //to be checked 
-    'models/user.js'
+    'models/user.js',
+    'models/thought.js'
   ]);
  
   // Clear specified collections
-  seeder.clearModels(['User'], function() {
+  //This part needs to be checked 
+  seeder.clearModels(['User', 'Thought'], function() {
  
     // Callback to populate DB once collections have been cleared
     seeder.populateModels(data, function() {
@@ -34,5 +36,27 @@ var data = [
                 'email': 'bobby_genius@yahoo.ca'
             }
         ]
-    }
-];
+    },
+    {
+      'model': 'Thought',
+      'documents': [
+          {
+              'username': 'Johnny',
+              'thoughtText': 'I love spicy food',
+              'Reaction': [
+{
+  'username': 'Bobby',
+  'reactionBody': 'I disagree'
+
+}
+
+              ]
+          },
+          {
+              'username': 'Bobby',
+              'thoughtText': 'I like all types of food'
+          }
+      ]
+  }
+
+  ];

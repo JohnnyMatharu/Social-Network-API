@@ -1,3 +1,8 @@
 const User = require('./User');
+const Thought = require('./Thought');
 
-module.exports = { User };
+//this has to be checked
+module.exports = { User, Thought };
+
+
+

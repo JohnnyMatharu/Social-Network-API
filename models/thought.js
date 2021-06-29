@@ -1,6 +1,44 @@
 const { Schema, model } = require('mongoose');
 const dateFormat = require('../utils/dateFormat');
 
+
+const ReactionSchema = new Schema(
+  
+  {
+//this needs to be verified for default part as new objectid
+reactionId: {
+    default : Schema.Types.ObjectId
+    },
+
+reactionBody: {
+    type: String,
+    max: 280,
+    required: true
+  },
+
+username: {
+    type: String,
+    required: true
+},
+ 
+    createdAt: { 
+      type: Date, 
+      default: Date.now(),
+      //this getter needs to be checked, may need to export the format function in dateFormat.js
+      get: dateFormat
+    }
+  },
+  {
+    toJSON: {
+      getters: true
+    },
+    // prevents virtuals from creating duplicate of _id as `id`
+    id: false
+  }
+);
+
+
+
 const ThoughtSchema = new Schema(
   
   {
@@ -16,20 +54,16 @@ const ThoughtSchema = new Schema(
     createdAt: { 
       type: Date, 
       default: Date.now(),
-      //this getter needs to be checked
-      get: timestamp 
+      //this getter needs to be checked, may need to export the format function in dateFormat.js
+      get: dateFormat
     },
   
     username: {
       type: String,
       required: true
 },
-reactions: [
-  {
-    type: Schema.Types.ObjectId,
-    ref: 'Reaction'
-  }
-]
+//this has to be checked 
+reactions: [ReactionSchema]
   },
   {
     toJSON: {

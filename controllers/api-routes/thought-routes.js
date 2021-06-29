@@ -1,119 +1,138 @@
-/*
-
-const { Comment, Pizza } = require('../models');
-
-const commentController = {
-  // add comment to pizza
-  addComment({ params, body }, res) {
-    console.log(params);
-    Comment.create(body)
-      .then(({ _id }) => {
-        return Pizza.findOneAndUpdate(
-          { _id: params.pizzaId },
-          { $push: { comments: _id } },
-          { new: true }
-        );
-      })
-      .then(dbPizzaData => {
-        console.log(dbPizzaData);
-        if (!dbPizzaData) {
-          res.status(404).json({ message: 'No pizza found with this id!' });
-          return;
-        }
-        res.json(dbPizzaData);
-      })
-      .catch(err => res.json(err));
-  },
-
-  // add reply to comment
-  addReply({ params, body }, res) {
-    Comment.findOneAndUpdate(
-      { _id: params.commentId },
-      { $push: { replies: body } },
-      { new: true, runValidators: true }
-    )
-      .then(dbPizzaData => {
-        if (!dbPizzaData) {
-          res.status(404).json({ message: 'No pizza found with this id!' });
-          return;
-        }
-        res.json(dbPizzaData);
-      })
-      .catch(err => res.json(err));
-  },
-
-  // remove comment
-  removeComment({ params }, res) {
-    Comment.findOneAndDelete({ _id: params.commentId })
-      .then(deletedComment => {
-        if (!deletedComment) {
-          return res.status(404).json({ message: 'No comment with this id!' });
-        }
-        return Pizza.findOneAndUpdate(
-          { _id: params.pizzaId },
-          { $pull: { comments: params.commentId } },
-          { new: true }
-        );
-      })
-      .then(dbPizzaData => {
-        if (!dbPizzaData) {
-          res.status(404).json({ message: 'No pizza found with this id!' });
-          return;
-        }
-        res.json(dbPizzaData);
-      })
-      .catch(err => res.json(err));
-  },
-  // remove reply
-  removeReply({ params }, res) {
-    Comment.findOneAndUpdate(
-      { _id: params.commentId },
-      { $pull: { replies: { replyId: params.replyId } } },
-      { new: true }
-    )
-      .then(dbPizzaData => res.json(dbPizzaData))
-      .catch(err => res.json(err));
-  }
-};
-
-module.exports = commentController;
+const { Thought } = require('../../models');
+const router = require('express').Router();
 
 
-*/
 
+router.get('/', (req, res) => {
+  //  GET to get all thoughts
 
-/*
-/api/thoughts
+  Thought.find({})
 
-GET to get all thoughts
+    .then(dbUserData => res.json(dbUserData))
+    .catch(err => {
+      console.log(err);
+      res.sendStatus(400);
+    });
+}),
 
-GET to get a single thought by its _id
+  //GET to get a single thought by its _id
+  router.get('/:id', (req, res) => {
+    Thought.findOne({ _id: req.params.id })
+      //check the following
+      //.select('-__v')
+      .then(dbUserData => res.json(dbUserData))
+      .catch(err => {
+        console.log(err);
+        res.sendStatus(400);
+      });
+  })
 
-POST to create a new thought (don't forget to push the created thought's _id to the associated user's thoughts array field)
+//Make sure it does following, check it out, and instruction underneath, may need to push in array for thoughts in user model
+//{
+//"thoughtText": "Here's a cool thought...",
+// "username": "lernantino",
+// "userId": "5edff358a0fcb779aa7b118b"
+// }
 
-// example data
-{
-  "thoughtText": "Here's a cool thought...",
-  "username": "lernantino",
-  "userId": "5edff358a0fcb779aa7b118b"
-}
-PUT to update a thought by its _id
-
-DELETE to remove a thought by its _id
-
-*/
+//To be understood
+//POST to create a new thought (don't forget to push the created thought's _id to the associated user's thoughts array field)
 
 
 
 
 
+router.post('/', (req, res) => {
+  Thought.create(req.body)
+    .then(dbUserData => {
+      return User.findOneAndUpdate(
+        {_id:req.body.userId},
+        {$push: {thoughts: dbUserData._id}},
+        {new: true}
+      )
+    })
+    .catch(err => res.json(err));
+});
+  
 
-/*
 
-/api/thoughts/:thoughtId/reactions
 
-POST to create a reaction stored in a single thought's reactions array field
+//PUT to update a thought by its _id
+router.put('/:id', (req, res) => {
+  Thought.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true, runValidators: true })
+    .then(dbUserData => {
+      if (!dbUserData) {
+        res.status(404).json({ message: 'No User found with this id!' });
+        return;
+      }
+      res.json(dbUserData);
+    })
+    .catch(err => res.json(err));
+});
 
-DELETE to pull and remove a reaction by the reaction's reactionId value
 
-*/
+
+
+//DELETE to remove a thought by its _id
+
+router.delete('/:id', (req, res) => {
+  Thought.findOneAndDelete({ _id: req.params.id })
+    .then(dbUserData => res.json(dbUserData))
+    .catch(err => res.json(err));
+});
+
+
+//Needs thorough checking
+
+//  /api/thoughts/:thoughtId/reactions
+
+//  POST to create a reaction stored in a single thought's reactions array field
+
+router.post('/:thoughtId/reactions', (req, res) => {
+  console.log("My post reaction route was hit");
+  console.log(req.params.thoughtId);
+ 
+
+  res.status(200).json({ message: "Route hit!" });
+
+  Thought.findOneAndUpdate({
+    _id: req.params.thoughtId
+  }, {
+    $addToSet: {
+      reactions: req.body
+    }
+  }, {
+    new: true
+  }).then(dbUserData => {
+    if (!dbUserData) {
+      res.status(404).json({ message: 'No User found with this id!' });
+      return;
+    }
+    res.json(dbUserData);
+  })
+    .catch(err => res.json(err));
+});
+
+
+//To be checked thoroughly
+//DELETE to pull and remove a reaction by the reaction's reactionId value
+
+router.delete('/:thoughtId/reactions', (req, res) => {
+  Thought.findOneAndUpdate({
+    _id: req.params.thoughtId
+  }, {
+    $pull: {
+      reactions: req.body
+    }
+  }, {
+    new: true
+  }).then(dbUserData => {
+    if (!dbUserData) {
+      res.status(404).json({ message: 'No User found with this id!' });
+      return;
+    }
+    res.json(dbUserData);
+  })
+    .catch(err => res.json(err));
+});
+//this is to be checked
+module.exports = router;
